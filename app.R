@@ -19,13 +19,18 @@ if (!dir.exists(figures_dir)) {
   stop("Results figures directory not found: ", figures_dir)
 }
 # Check packages
-required_packages <- c("shiny", "bslib")
+required_packages <- c("shiny", "bslib",
+  "nnet")
 missing_packages <- required_packages[
   !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
 ]
 if (length(missing_packages) > 0) {
   stop("Missing packages: ", paste(missing_packages, collapse = ", "))
 }
+# Load nnet to register predict.nnet S3 method
+suppressPackageStartupMessages(
+  library(nnet)
+)
 # Load application modules
 source(file.path(app_dir, "R", "01_mlp_inference.R"))
 source(file.path(app_dir, "R", "02_csv_input_validation.R"))
